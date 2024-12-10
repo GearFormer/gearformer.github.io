@@ -1,12 +1,1513 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Gearformer</title>
+    <title>Deep Generative Model for Mechanical System Configuration Design</title>
+
+    <!-- External CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --text-color: #333;
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-color: #fff;
+            --gradient-start: #f8f9fa;
+            --gradient-end: #ffffff;
+        }
+
+        .acceptance-banner {
+            background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            margin: 1rem auto 2rem;
+            display: inline-block;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+            }
+
+            to {
+                box-shadow: 0 4px 25px rgba(52, 152, 219, 0.4);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .acceptance-banner {
+                font-size: 0.9rem;
+                margin: 0.5rem auto 1.5rem;
+            }
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.75rem;
+                line-height: 1.3;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        .authors {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .affiliations {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            position: relative;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: var(--text-color);
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-section .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .author-name {
+            display: inline-block;
+            margin: 0 10px;
+            position: relative;
+            color: var(--primary-color);
+        }
+
+        .author-name:not(:last-child)::after {
+            content: '•';
+            position: absolute;
+            right: -15px;
+            color: var(--primary-color);
+            opacity: 0.5;
+        }
+
+        .affiliations {
+            color: var(--text-color);
+        }
+
+        .abstract {
+            max-width: 1000px;
+            margin: 2rem auto;
+            text-align: left;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: rgba(255, 255, 255, 0.6);
+            padding: 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .abstract p {
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-gear-section {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-gear-section::before {
+            display: none;
+        }
+
+        .featured-gear-carousel {
+            position: relative;
+            width: 80vh;
+            height: 80vh;
+            margin: 0 auto 2rem;
+        }
+
+        .featured-gear {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+
+        .featured-gear.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .featured-carousel-controls {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 2rem;
+            pointer-events: none;
+        }
+
+        .featured-prev-button,
+        .featured-next-button {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--secondary-color);
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            pointer-events: auto;
+            backdrop-filter: blur(5px);
+        }
+
+        .featured-prev-button:hover,
+        .featured-next-button:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .featured-prev-button:disabled,
+        .featured-next-button:disabled {
+            background: rgba(240, 240, 240, 0.5);
+            border: none;
+            color: #ccc;
+            cursor: not-allowed;
+            transform: scale(1);
+            box-shadow: none;
+        }
+
+        .section {
+            padding: 3rem 1.5rem;
+            background: #fff;
+        }
+
+        .model-section,
+        .mcts-section {
+            text-align: center;
+        }
+
+        .figure-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .figure-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .figure-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        h2,
+        h3 {
+            color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background: var(--secondary-color);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #287fb5;
+        }
+
+        .btn-secondary {
+            background: rgba(108, 117, 125, 0.9);
+            border: none;
+            color: white;
+            position: relative;
+        }
+
+        .btn-secondary.disabled {
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+
+        .coming-soon-badge {
+            font-size: 0.7em;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 992px) {
+            .gearbox-row {
+                max-width: 700px;
+                padding: 0 4rem;
+            }
+
+            .gearbox-viewer {
+                width: 300px;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gearbox-row {
+                max-width: 500px;
+                padding: 0;
+                margin: 0 auto;
+            }
+
+            .gearbox-viewer {
+                width: 220px;
+                height: 220px;
+                margin: 0 auto;
+            }
+
+            .featured-prev-button,
+            .featured-next-button,
+            .carousel-button {
+                width: 45px;
+                height: 45px;
+                font-size: 1.5rem;
+            }
+
+            .featured-carousel-controls,
+            .carousel-controls {
+                padding: 0 0.5rem;
+            }
+
+            .featured-gear-carousel {
+                width: 300px;
+                height: 300px;
+                position: relative;
+            }
+
+            .featured-carousel-controls {
+                width: 300px;
+                position: relative;
+                top: 0;
+                transform: none;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .section {
+                padding: 3rem 0;
+            }
+
+            .hero-section .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .abstract {
+                margin-left: 15px;
+                margin-right: 15px;
+            }
+
+            .architecture-image-container {
+                margin: 0;
+                padding: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .featured-gear-carousel {
+                width: 250px;
+                height: 250px;
+            }
+
+            .featured-carousel-controls {
+                width: 250px;
+                margin-top: 0.5rem;
+            }
+
+            .section {
+                padding: 2rem 0;
+            }
+
+            .feature-card {
+                text-align: center;
+                margin: 0 auto;
+            }
+
+            .video-container {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .architecture-image-container {
+                padding: 0.25rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .section .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .feature-card {
+                margin-bottom: 1.5rem;
+            }
+
+            .architecture-image-container {
+                margin-left: auto;
+                margin-right: auto;
+                padding: 1rem;
+            }
+
+            .lead {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
+
+        .navbar {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--secondary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .architecture-image-container {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0rem;
+            background: white;
+        }
+
+        .architecture-image {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .architecture-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay-point {
+            position: absolute;
+            transform: translate(-50%, -50%);
+        }
+
+        .point-dot {
+            display: block;
+            width: 16px;
+            height: 16px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.3);
+            animation: pulse 2s infinite;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .point-content {
+            position: absolute;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .point-content ul {
+            text-align: left;
+            margin: 0.5rem 0 0 0;
+            padding-left: 1.2rem;
+        }
+
+        .point-content li {
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .point-content h5 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .point-content p {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            color: #444;
+        }
+
+        .point-content.active {
+            opacity: 1;
+            transform: translateY(10px);
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon-small {
+            width: 40px;
+            height: 40px;
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .mcts-visualization {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .interactive-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .highlight-point {
+            position: absolute;
+            transform: translate(-50%, -50%);
+        }
+
+        .point-marker {
+            display: block;
+            width: 14px;
+            height: 14px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.3);
+            animation: pulse 2s infinite;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .point-label {
+            position: absolute;
+            background: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            font-size: 1rem;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .point-label.active {
+            opacity: 1;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+            }
+        }
+
+        .search-features {
+            padding-left: 2rem;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(5px);
+        }
+
+        .architecture-explanation,
+        .mcts-explanation {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .architecture-image-container {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.0rem;
+            background: white;
+        }
+
+        .explanation-box {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .explanation-step {
+            text-align: center;
+            flex: 1;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .explanation-step p {
+            margin: 0;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .explanation-arrow {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.8;
+        }
+
+        .copyright {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.8rem;
+            color: var(--text-color);
+            opacity: 0.7;
+            z-index: 1000;
+        }
+
+        .video-container {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        .demo-section {
+            padding: 5rem 0;
+        }
+
+        .demo-section .explanation-box {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .demo-section .lead {
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .bg-light {
+            background-color: var(--gradient-start) !important;
+        }
+
+        .section {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .featured-gear-section {
+                width: 100%;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .featured-gear-carousel {
+                width: 300px;
+                height: 300px;
+                position: relative;
+            }
+
+            .featured-carousel-controls {
+                width: 300px;
+                /* @mehdi: Remember: Must match carousel width */
+            }
+
+            .abstract {
+                margin-left: auto;
+                margin-right: auto;
+                width: calc(100% - 30px);
+                max-width: 100%;
+            }
+
+            .section>.container {
+                width: 100%;
+                max-width: 100%;
+                padding-left: 15px;
+                padding-right: 15px;
+                margin: 0 auto;
+            }
+
+            .row {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .video-container {
+                width: 100%;
+                max-width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .featured-gear-carousel {
+                width: 250px;
+                height: 250px;
+            }
+
+            .featured-carousel-controls {
+                width: 250px;
+            }
+        }
+
+        .hero-buttons {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-buttons {
+                flex-direction: row;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .hero-buttons .btn {
+                flex: 1;
+                min-width: 140px;
+                max-width: 180px;
+                margin: 0;
+            }
+        }
+
+        .acceptance-banner a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .acceptance-banner a:hover {
+            color: white;
+            opacity: 0.9;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Hello, World!</h1>
-    <p>Welcome to my GitHub Pages site.</p>
+    <!-- Hero Section with Abstract -->
+    <section class="hero-section" id="abstract">
+        <div class="hero-particles" id="particles-js"></div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-10 mx-auto text-center">
+                    <div class="acceptance-banner" data-aos="fade-up" data-aos-delay="300">
+                        <a href="https://aaai.org/conference/aaai/aaai-25/" target="_blank">
+                            🎉 Accepted to AAAI 2025 (Main Track) 🎉
+                        </a>
+                    </div>
+                    <h1 class="title" data-aos="fade-down" data-aos-delay="200">
+                        Deep Generative Model for Mechanical System Configuration Design
+                    </h1>
+
+                    <div class="abstract" data-aos="fade-up" data-aos-delay="600">
+                        <div class="authors" data-aos="fade-up" data-aos-delay="200">
+                            <span class="author-name">Yasaman Etesam<sup>1,2</sup></span>
+                            <span class="author-name">Hyunmin Cheong<sup>1</sup></span>
+                            <span class="author-name">Mohammadmehdi Ataei<sup>1</sup></span>
+                            <span class="author-name">Pradeep Kumar Jayaraman<sup>1</sup></span>
+                        </div>
+
+                        <div class="affiliations" data-aos="fade-up" data-aos-delay="400">
+                            <div><sup>1</sup>Autodesk Research, Toronto, Ontario, Canada</div>
+                            <div><sup>2</sup>School of Computing Science, Simon Fraser University, Burnaby, BC, Canada
+                            </div>
+                        </div>
+
+                        <p>
+                            Generative AI has made remarkable progress in addressing various design challenges. One
+                            prominent area where generative AI could bring significant value is in engineering design.
+                            In particular, selecting an optimal set of components and their interfaces to create a
+                            mechanical system that meets design requirements is one of the most challenging and
+                            time-consuming tasks for engineers.
+                        </p>
+                        <p>
+                            This configuration design task is inherently challenging due to its categorical nature,
+                            multiple design requirements a solution must satisfy, and the reliance on physics
+                            simulations for evaluating potential solutions. These characteristics entail solving a
+                            combinatorial optimization problem with multiple constraints involving black-box functions.
+                        </p>
+                        <p>
+                            To address this challenge, we propose a deep generative model to predict the optimal
+                            combination of components and interfaces for a given design problem. To demonstrate our
+                            approach, we solve a gear train synthesis problem by first creating a synthetic dataset
+                            using a grammar, a parts catalogue, and a physics simulator.
+                        </p>
+                    </div>
+
+                    <div class="hero-buttons" data-aos="fade-up" data-aos-delay="400">
+                        <a href="https://arxiv.org/abs/2409.06016" class="btn btn-primary me-3" target="_blank">
+                            <i class="fas fa-file-pdf"></i> Read Paper
+                        </a>
+                        <a href="#" class="btn btn-secondary disabled" title="Coming Soon">
+                            <i class="fab fa-github"></i> View Code
+                            <span class="coming-soon-badge">Coming Soon</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section intro-section text-center" id="GearFormer">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2 class="section-title">GearFormer</h2>
+                <p class="section-subtitle">A showcase of our approach to mechanical system configuration design</p>
+            </div>
+            <p class="lead mb-4" data-aos="fade-up">
+                To demonstrate our approach's effectiveness, we applied our technique to gear train design synthesis.
+                Below are examples of gear configurations automatically generated by our AI model based on specific
+                design requirements, showcasing the model's ability to create diverse, physically valid mechanical
+                systems.
+            </p>
+        </div>
+    </section>
+
+    <!-- Featured Gear Section -->
+    <section class="featured-gear-section">
+        <div class="featured-gear-carousel" data-aos="fade-up">
+            <div class="featured-gear" id="featured-gear1"></div>
+            <div class="featured-gear" id="featured-gear2"></div>
+            <div class="featured-gear" id="featured-gear3"></div>
+            <div class="featured-gear" id="featured-gear4"></div>
+            <div class="featured-gear" id="featured-gear5"></div>
+        </div>
+        <div class="featured-carousel-controls" data-aos="fade-up" data-aos-delay="200">
+            <button class="featured-prev-button">&lt;</button>
+            <button class="featured-next-button">&gt;</button>
+        </div>
+    </section>
+
+    <!-- Model Architecture Section -->
+    <section class="section model-section" id="architecture">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2 class="section-title">GearFormer Architecture</h2>
+                <p class="section-subtitle">A Transformer-based model for mechanical system configuration design</p>
+            </div>
+            <div class="figure-container" data-aos="fade-up">
+                <div class="row align-items-center">
+                    <div class="col-lg-12">
+                        <div class="architecture-image-container">
+                            <img src="assets/ModelArch.png" alt="Model Architecture"
+                                class="img-fluid architecture-image">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h4>Deep Learning Core</h4>
+                            <p>Transformer architecture optimized for mechanical design with adaptive loss weighting
+                                between sequence prediction and physical constraints</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <h4>Physics-Aware Design</h4>
+                            <p>Incorporates mechanical constraints and physical requirements through specialized loss
+                                functions and Dymos-based simulation</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h4>Domain Specific Language</h4>
+                            <p>Incorporates a formal grammar and lexicon for mechanical systems, enabling structured
+                                generation of physically valid gear configurations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MCTS Section -->
+    <section class="section mcts-section" id="mcts">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2 class="section-title">Hybrid Transformer + MCTS</h2>
+                <p class="section-subtitle">Combining the power of Monte Carlo Tree Search with GearFormer</p>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="mcts-visualization">
+                        <img src="assets/MCTS.png" alt="MCTS Integration" class="img-fluid rounded shadow-lg">
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="search-features">
+                        <div class="feature-item mb-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="feature-icon-small me-3">
+                                    <i class="fas fa-tree"></i>
+                                </div>
+                                <h4 class="mb-0">Strategic Exploration</h4>
+                            </div>
+                            <p>MCTS explores the vast design space by focusing on the most promising
+                                initial component choices</p>
+                        </div>
+                        <div class="feature-item mb-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="feature-icon-small me-3">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <h4 class="mb-0">AI-Powered Completion</h4>
+                            </div>
+                            <p>GearFormer leverages learned patterns to complete configurations with high success rates
+                            </p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="feature-icon-small me-3">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h4 class="mb-0">Superior Performance</h4>
+                            </div>
+                            <p>The hybrid approach achieves better results than either method alone, with significantly
+                                fewer iterations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Generation Demo Section -->
+    <section class="section" id="demo-generation">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2 class="section-title">Demo - Generation</h2>
+                <p class="section-subtitle">Interactive UI for rapid mechanical system design exploration</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10" data-aos="fade-up">
+                    <div class="video-container mb-4">
+                        <video class="w-100 rounded shadow-lg" controls>
+                            <source src="assets/generate.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <p class="lead mb-4" data-aos="fade-up"
+                        style="max-width: 1000px; margin: 2rem auto; line-height: 1.8; font-size: 1.25rem; color: #2c3e50; text-align: center;">
+                        Intuitive interfaces can be designed on top of such systems to specify requirements and explore
+                        diverse gear configurations.
+                        The AI-powered system generates <span
+                            style="color: var(--secondary-color); font-weight: 500;">physically valid designs in
+                            real-time</span>,
+                        allowing quick iteration and exploration of the design space. This dramatically accelerates the
+                        mechanical system design process
+                        while ensuring all generated solutions meet the specified constraints.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Copilot Demo Section -->
+    <section class="section" id="demo-copilot">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2 class="section-title">Demo - Copilot</h2>
+                <p class="section-subtitle">AI-powered design assistance with GearFormer</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10" data-aos="fade-up">
+                    <div class="video-container mb-4">
+                        <video class="w-100 rounded shadow-lg" controls>
+                            <source src="assets/copilot.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <p class="lead mb-4" data-aos="fade-up"
+                        style="max-width: 1000px; margin: 2rem auto; line-height: 1.8; font-size: 1.25rem; color: #2c3e50; text-align: center;">
+                        GearFormer's transformer model powers an intelligent copilot that assists designers during the
+                        configuration process.
+                        The system provides <span style="color: var(--secondary-color); font-weight: 500;">smart
+                            autocompletion suggestions</span>,
+                        predicting optimal component combinations that satisfy both the partial design and physical
+                        constraints. This creates a fluid,
+                        collaborative design experience between human expertise and AI assistance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- External Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Featured gear carousel logic
+        let currentFeaturedGear = 0;
+        const featuredGears = document.querySelectorAll('.featured-gear');
+        const featuredPrevButton = document.querySelector('.featured-prev-button');
+        const featuredNextButton = document.querySelector('.featured-next-button');
+
+        function showFeaturedGear(index) {
+            featuredGears.forEach((gear, i) => {
+                gear.classList.toggle('active', i === index);
+            });
+            featuredPrevButton.disabled = index === 0;
+            featuredNextButton.disabled = index === featuredGears.length - 1;
+        }
+
+        featuredPrevButton.addEventListener('click', () => {
+            if (currentFeaturedGear > 0) {
+                currentFeaturedGear--;
+                showFeaturedGear(currentFeaturedGear);
+            }
+        });
+
+        featuredNextButton.addEventListener('click', () => {
+            if (currentFeaturedGear < featuredGears.length - 1) {
+                currentFeaturedGear++;
+                showFeaturedGear(currentFeaturedGear);
+            }
+        });
+
+        showFeaturedGear(0);
+
+        // STL Viewer
+        function initGearboxViewer(containerId) {
+            const container = document.getElementById(containerId);
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf8f9fa);
+
+            const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 2000);
+            camera.position.set(120, 120, 200);
+
+            const renderer = new THREE.WebGLRenderer({
+                antialias: true,
+                alpha: true
+            });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.0;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            container.appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambientLight);
+
+            const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.0);
+            scene.add(hemisphereLight);
+
+            const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            mainLight.position.set(50, 100, 50);
+            scene.add(mainLight);
+
+            const fillLight = new THREE.DirectionalLight(0xffffff, 1.0);
+            fillLight.position.set(-50, 50, -50);
+            scene.add(fillLight);
+
+            const topLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            topLight.position.set(0, 200, 0);
+            scene.add(topLight);
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 1.0;
+            controls.minDistance = 100;
+            controls.maxDistance = 300;
+            controls.enableZoom = false;
+
+            let mesh;
+            const loader = new THREE.STLLoader();
+
+            const idNumber = parseInt(containerId.replace(/\D/g, ''), 10);
+            const stlPath = `assets/gear_box_${idNumber}.stl`;
+
+            loader.load(
+                stlPath,
+                function (geometry) {
+                    geometry.center();
+                    const material = new THREE.MeshPhysicalMaterial({
+                        color: 0xE8E8E8,
+                        metalness: 0.9,
+                        roughness: 0.2,
+                        clearcoat: 0.3,
+                        clearcoatRoughness: 0.2,
+                        reflectivity: 0.8,
+                        envMapIntensity: 0.8
+                    });
+
+                    mesh = new THREE.Mesh(geometry, material);
+
+                    const bbox = new THREE.Box3().setFromObject(mesh);
+                    const size = bbox.getSize(new THREE.Vector3());
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 120 / maxDim;
+                    mesh.scale.set(scale, scale, scale);
+                    mesh.position.y = 0;
+                    mesh.rotation.x = -Math.PI / 2;
+
+                    scene.add(mesh);
+
+                    const initialY = mesh.position.y;
+                    const floatAnimation = () => {
+                        const time = Date.now() * 0.001;
+                        mesh.position.y = initialY + Math.sin(time) * 2;
+                    };
+
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        controls.update();
+                        if (mesh) floatAnimation();
+                        renderer.render(scene, camera);
+                    }
+                    animate();
+                },
+                undefined,
+                function (error) {
+                    console.error('Error loading STL:', error);
+                    container.innerHTML = '<div class="alert alert-danger">Error loading 3D model</div>';
+                }
+            );
+
+            function onWindowResize() {
+                const newWidth = container.clientWidth;
+                const newHeight = container.clientHeight;
+                camera.aspect = newWidth / newHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(newWidth, newHeight);
+            }
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        // Initialize gear viewers
+        document.addEventListener('DOMContentLoaded', function () {
+            ['featured-gear1', 'featured-gear2', 'featured-gear3', 'featured-gear4', 'featured-gear5'].forEach(id => {
+                initGearboxViewer(id);
+            });
+        });
+
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 120,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#4a5568'
+                },
+                shape: {
+                    type: 'circle'
+                },
+                opacity: {
+                    value: 0.7,
+                    random: false,
+                    anim: {
+                        enable: true,
+                        speed: 0.5,
+                        opacity_min: 0.4,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 4,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        size_min: 2,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#4a5568',
+                    opacity: 0.6,
+                    width: 1.5,
+                    triangles: {
+                        enable: false
+                    }
+                },
+                move: {
+                    enable: true,
+                    speed: 1.2,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
+                    attract: {
+                        enable: true,
+                        rotateX: 1200,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'grab'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 200,
+                        line_linked: {
+                            opacity: 0.8,
+                            color: '#718096'
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.overlay-point').forEach(point => {
+                const content = point.querySelector('.point-content');
+                const dot = point.querySelector('.point-dot');
+
+                // Close any open tooltips when clicking elsewhere
+                document.addEventListener('click', (e) => {
+                    if (!point.contains(e.target)) {
+                        content.classList.remove('active');
+                    }
+                });
+
+                dot.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // Close other tooltips
+                    document.querySelectorAll('.point-content').forEach(c => {
+                        if (c !== content) c.classList.remove('active');
+                    });
+                    // Toggle current tooltip
+                    content.classList.toggle('active');
+                });
+            });
+
+            // Handle MCTS points
+            document.querySelectorAll('.highlight-point').forEach(point => {
+                const marker = point.querySelector('.point-marker');
+                const label = point.querySelector('.point-label');
+
+                document.addEventListener('click', (e) => {
+                    if (!point.contains(e.target)) {
+                        label.classList.remove('active');
+                    }
+                });
+
+                marker.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // Close other labels
+                    document.querySelectorAll('.point-label').forEach(l => {
+                        if (l !== label) l.classList.remove('active');
+                    });
+                    // Toggle current label
+                    label.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" data-aos="fade-down">
+        <div class="container">
+            <a class="navbar-brand" href="#">GearFormer</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#abstract">Abstract</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#GearFormer">GearFormer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#architecture">Architecture</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#mcts">MCTS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#demo-generation">Generation (Video)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#demo-copilot">Copilot (Video)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="copyright">
+        © 2024 M. Ataei
+    </div>
 </body>
+
 </html>
